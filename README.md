@@ -6,14 +6,16 @@
 
 The repository contains an application which is used to benchmark five different sorting algorithms. 
 
-<br>
-
-
 *Submitted by:* Olga Rozhdestvina (Student No: G00387844) 
 
 *Lecturer:* Dominic Carr
 
 *Programming Languages used:* [Python](https://www.python.org/)
+
+
+
+----
+
 
 <br>
 

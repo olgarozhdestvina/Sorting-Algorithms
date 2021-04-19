@@ -1,4 +1,4 @@
-""" CTA Propositionect on Sorting Algorithms
+""" CTA Project on Sorting Algorithms
 Computational Thinking with Algorithms Module GMIT 2021
 Lecturer: Dominic Carr
 Completed by Olga Rozhdestvina
@@ -11,6 +11,7 @@ Insertion sort: https://realpython.com/sorting-algorithms-python/#implementing-i
 
 from time import time
 import numpy as np
+import pandas as pd
 
 
 def performance(func):
@@ -62,11 +63,9 @@ def insertion_sort(array):
     return array
 
 
-def benchmark(sorting_algorithm):
+def benchmark(input_sizes, sorting_algorithm):
     """ Find average running time (in milliseconds) for a sorting algorithm for each input size array """
-    input_sizes = [100, 250, 500, 750, 1000,
-                   1250]  # , 2500, 3750, 5000, 6250, 7500, 8750, 10000]
-
+    
     time_avg = []
 
     # For each input size generate a new array
@@ -82,16 +81,48 @@ def benchmark(sorting_algorithm):
             # Sum the time differences
             time_diff_sum += time_diff
 
-        # Find the average, convert to ms and append to the list
+        # Find the average, convert to ms, 
+        # round to 3 decimal places and append to the list
         time = (time_diff_sum / 10) * 1000
-        time_avg.append(time)
+        time_avg.append(np.round(time, 3))
 
     return time_avg
 
 
+def benchmark_runner(input_sizes):
+    """ Creating a list of benchmarks """
+    # Run benchmark for each sorting algorithm
+    sorting_algorithms = [insertion_sort]#, 'quicksort', 'heap_sort', 'radix_sort', 'counting_sort', 'introsort']
+
+    benchmarks = []
+    for sorting_algorithm in sorting_algorithms:
+        benchmarks.append(benchmark(input_sizes, sorting_algorithm))
+    
+    return benchmarks
+
+
+
+def output_to_console(input_sizes, benchmarks):
+    """ Console output of benchmarking results """
+
+    # Creating a dataframe with input sizes for columns 
+    # and algorithm names for the index  
+    algorithm_names = ['Insertion Sort']#, 'Quicksort', 'Heap Sort', 'Radix Sort', 'Counting Sort', 'IntroSort']
+    df = pd.DataFrame(index = algorithm_names, columns = input_sizes)    
+        
+    # Add the results into the dataframe
+    for i in range(len(algorithm_names)):
+        df.iloc[i] = benchmarks[i]
+
+    return df
+    
+    
+
 # Driver code to test above
 if __name__ == '__main__':
-    sorting_algorithms = [insertion_sort]
+    input_sizes = [100, 250, 500, 750, 1000,
+                   1250] # , 2500, 3750, 5000, 6250, 7500, 8750, 10000]
 
-    for sorting_algorithm in sorting_algorithms:
-        print(f'{benchmark(sorting_algorithm)}')
+    benchmarks = benchmark_runner(input_sizes)
+    print(output_to_console(input_sizes, benchmarks))
+    
