@@ -5,7 +5,8 @@ Completed by Olga Rozhdestvina
 
 
 Application to benchmark five different sorting algorithms.
-Implementation is taken from https://realpython.com/sorting-algorithms-python/#implementing-insertion-sort-in-python
+Implementations are taken from:
+Insertion sort: https://realpython.com/sorting-algorithms-python/#implementing-insertion-sort-in-python
 """
 
 from time import time
