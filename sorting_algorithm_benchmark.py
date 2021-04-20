@@ -32,7 +32,7 @@ def insertion_sort(array):
         position = i - 1
 
         # Loop through the array and find the correct position
-        # of the element referenced by `current_value`
+        # of the element referenced by current_value
         while position >= 0 and array[position] > current_value:
 
             # Shift the value to the left and reposition position
@@ -50,7 +50,8 @@ def insertion_sort(array):
 # 2. Quicksort.
 
 def quicksort(array):
-    # Base case for the recursion
+    # Base case for the recursion where there is 
+    # only one element in the array.
     if len(array) < 2:
         return array
 
@@ -87,30 +88,30 @@ def shuffled_array(array):
     return array
 
 
-def benchmark(input_sizes, sorting_algorithm):
+def average_running_time(input_sizes, sorting_algorithm):
     """ Find average running time (in milliseconds) 
     for a sorting algorithm for each input size array """
 
     running_time_average = []
 
-    # For each input size generate a new array
+    # For each input size generate a new array.
     for i in input_sizes:
         time_diff_sum = 0
         arr = np.arange(i)
 
         for _ in range(10):
-            # Shuffle the array and then sort it.
+            # Shuffle the array and measure the time it took to sort it.
             shuffled = shuffled_array(arr)
 
             start_time = time()
             sorting_algorithm(shuffled)
             time_diff = time() - start_time
 
-            # Sum the time differences
+            # Sum up the runtimes.
             time_diff_sum += time_diff
 
         # Find the average, convert to ms,
-        # round to 3 decimal places and append to the list
+        # round to 3 decimal places and append to the list.
         running_time_average_sec = (time_diff_sum / 10) * 1000
         running_time_average.append(round(running_time_average_sec, 3))
 
@@ -120,13 +121,14 @@ def benchmark(input_sizes, sorting_algorithm):
 def benchmark_runner(input_sizes):
     """ Creating a list of benchmark results """
     
-    # A list of algorithms
+    # A list of algorithms.
     sorting_algorithms = [insertion_sort, quicksort] # ,heap_sort, radix_sort, counting_sort, introsort]
     benchmarks = []
 
-    # Run benchmark for each sorting algorithm
+    # Run benchmark for each sorting algorithm.
     for sorting_algorithm in sorting_algorithms:
-        benchmarks.append(benchmark(input_sizes, sorting_algorithm))
+        running_time_average = average_running_time(input_sizes, sorting_algorithm)
+        benchmarks.append(running_time_average)
 
     return benchmarks
 
@@ -135,13 +137,12 @@ def results_as_dataframe(input_sizes, benchmarks):
     """ Dateframe format of benchmarking results """
 
     # Creating a dataframe with input sizes for columns
-    # and algorithm names for the index
-    # , 'Heap Sort', 'Radix Sort', 'Counting Sort', 'IntroSort']
-    algorithm_names = ['Insertion Sort', 'Quicksort']
+    # and algorithm names for the index.
+    algorithm_names = ['Insertion Sort', 'Quicksort']# , 'Heap Sort', 'Radix Sort', 'Counting Sort', 'IntroSort']
     df = pd.DataFrame(index=algorithm_names, columns=input_sizes)
     df.columns.name = 'Sizes'
 
-    # Add the results into the dataframe
+    # Add the results into the dataframe.
     for i in range(len(algorithm_names)):
         df.iloc[i] = benchmarks[i]
     return df
@@ -153,24 +154,50 @@ PLOT AND EXCEL FOR THE REPORT
 
 
 def plot(df):
-
     # Save the dataframe as an excel file.
     df.to_excel('benchmark_results.xlsx')
 
     # Rearrange the dataframe.
     df = df.T
-
-    # Style for plots.
-    plt.style.use('ggplot')
-
+    
     # Plot and save the figure.
+    plt.style.use('ggplot')
     df.plot(linestyle='--', marker='o')
     plt.xlabel('Input size n', fontstyle='italic')
     plt.ylabel('Running time (milliseconds)', fontstyle='italic')
     plt.title('Sorting Benchmark', y=1.05, fontsize=13)
     plt.legend(bbox_to_anchor=(1, 1), loc='best')
-    plt.savefig('benchmark_plot.jpg', bbox_inches="tight")
+    plt.savefig('benchmark_plot.png', bbox_inches="tight")
 
+
+def big_o_chart(df):
+    # Save the dataframe as an excel file.
+    df.to_excel('benchmark_results.xlsx')
+
+    # Rearrange the dataframe.
+    df = df.T
+    
+    # Plot and save the figure.
+    plt.style.use('ggplot')
+    df.plot(linestyle='--', marker='o')
+
+    # Fill the space in between 
+    # Adapted from https://www.statology.org/matplotlib-fill-between/
+    x = np.arange(1500)
+    y = x * 2
+
+    plt.fill_between(x, y, np.max(y), facecolor='red', interpolate=True,  alpha=0.5)
+    plt.fill_between(x, y, np.ones(x.shape)+30, facecolor='orange', interpolate=True,  alpha=0.5)
+    plt.fill_between(x, np.ones(x.shape)+30, facecolor='darkgreen', interpolate=True,  alpha=0.5)
+    plt.fill_between(x, x-20, y, facecolor='lightgreen', interpolate=True,  alpha=0.5)
+
+
+    plt.xlabel('Input size n', fontstyle='italic')
+    plt.ylabel('Running time (milliseconds)', fontstyle='italic')
+    plt.title('Sorting Benchmark', y=1.05, fontsize=13)
+    plt.legend(bbox_to_anchor=(1.4, 1), loc='best')
+    plt.savefig('big_o_notation_plot.png', bbox_inches="tight")
+    plt.close()
 
 # Driver code to test above.
 if __name__ == '__main__':
@@ -180,8 +207,8 @@ if __name__ == '__main__':
     benchmarks = benchmark_runner(input_sizes)
     benchmark_results = results_as_dataframe(input_sizes, benchmarks)
     plot(benchmark_results)
+    big_o_chart(benchmark_results)
 
     # Output benchmark results into the console.
-    headers = [benchmark_results.columns.name] + \
-        list(benchmark_results.columns)
+    headers = [benchmark_results.columns.name] + list(benchmark_results.columns)
     print(benchmark_results.to_markdown(tablefmt="grid", headers=headers))

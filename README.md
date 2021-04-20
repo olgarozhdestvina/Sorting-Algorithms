@@ -1,4 +1,6 @@
-## Project assessment for Computational Thinking with Algorithms GMIT 2021
+## Benchmarking Sorting Algorithms
+
+### [Project assessment for Computational Thinking with Algorithms GMIT 2021]
 
 <img height="220" src="https://miro.medium.com/max/2818/1*JS8P0ikspFNQdJa23iiSqw.png">
 
