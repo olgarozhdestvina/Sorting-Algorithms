@@ -25,7 +25,7 @@ The sorting algorithms are chosen according to the following criteria:
 
 1. A simple comparison-based sort (Insertion Sort)
 2. An efficient comparison-based sort (Quicksort and Heap Sort)
-3. A non-comparison sort (Radix Sort and Counting Sort)
+3. A non-comparison sort (Counting Sort)
 4. A hybrid sort (IntroSort)
 
 An introduction to the above algorithms as well as an analysis of their implementation and benchmarking are concluded in a report.
