@@ -10,7 +10,7 @@ from time import time
 import numpy as np
 import pandas as pd
 from sorting_algorithms import insertion_sort, quicksort, heap_sort
-from outputs_for_report import plot, big_o_chart_and_excel
+from outputs_for_report import big_o_chart_and_excel
 
 
 
@@ -59,7 +59,7 @@ def benchmark_runner(input_sizes):
     """ Creating a list of benchmark results """
     
     # A list of algorithms.
-    sorting_algorithms = [insertion_sort, quicksort, heap_sort]#, radix_sort, counting_sort, introsort]
+    sorting_algorithms = [insertion_sort, quicksort, heap_sort]#, counting_sort, introsort]
     benchmarks = []
 
     # Run benchmark for each sorting algorithm.
@@ -86,12 +86,10 @@ def results_as_dataframe(input_sizes, benchmarks):
 
 # Driver code to test above.
 if __name__ == '__main__':
-    input_sizes = [100, 250, 500, 750, 1000,
-                   1250, 2500, 3750, 5000, 6250, 7500, 8750, 10000]
+    input_sizes = [100, 250, 500, 750, 1000, 1250, 2500, 3750, 5000, 6250, 7500, 8750, 10000]
 
     benchmarks = benchmark_runner(input_sizes)
     benchmark_results = results_as_dataframe(input_sizes, benchmarks)
-    plot(benchmark_results)
     big_o_chart_and_excel(benchmark_results)
 
     # Output benchmark results into the console.
