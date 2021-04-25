@@ -29,17 +29,19 @@ def insertion_sort(array):
 
     return array
 
+
 # 2. Quicksort.
 # https://brilliant.org/wiki/quick-sort/
 
 def quicksort(array):
     # Base case for the recursion where there is
     # only one element in the array.
-    if len(array) < 2:
+    length = len(array)
+    if length < 2:
         return array
 
     # Randomly select a pivot
-    pivot = array[np.random.randint(0, len(array) - 1)]
+    pivot = array[np.random.randint(0, length - 1)]
 
     # Loop through the array and compare each element to the pivot.
     # If they are smaller --> add to the low list.
@@ -63,12 +65,11 @@ def quicksort(array):
 # https://brilliant.org/wiki/heap-sort/
 
 def max_heapify(array, heap_size, i):
-
     """ Function for maintaining the max-heap property:
     meaning that a node can't have a greater value than its parent."""
 
     # Initialize the largest as a root
-    largest = i 
+    largest = i
 
     # And then left and right children
     left = 2 * i + 1
@@ -116,6 +117,42 @@ def heap_sort(array):
         max_heapify(array, heap_size, 0)
 
 
-# 4. Counting Sort
+# 4. Bucket Sort
+# https://stackabuse.com/bucket-sort-in-python/
+
+def bucket_sort(array):
+    # Find maximum value in the list and use array length to determine
+    # which value in the array goes into which bucket
+    max_value = max(array)
+    length = len(array)
+    size = max_value/length
+
+    # Create a number of empty buckets to match the array length
+    buckets_list = []
+    for _ in range(length):
+        buckets_list.append([])
+
+    # Depending on the size distribute elements among buckets
+    for i in range(length):
+
+        # Size of element with current index
+        elem_size = int(array[i] / size)
+
+        if elem_size != length:
+            buckets_list[elem_size].append(array[i])
+        else:
+            buckets_list[length - 1].append(array[i])
+
+    # Sort individual backets using the Insertion Sort
+    for i in range(length):
+        insertion_sort(buckets_list[i])
+
+    # Concatenate the buckets
+    output = []
+    for bucket in range(length):
+        output = output + buckets_list[bucket]
+    return output
+
 
 # 5. IntroSort
+# https://www.geeksforgeeks.org/introsort-or-introspective-sort/

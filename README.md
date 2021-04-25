@@ -25,7 +25,7 @@ The sorting algorithms are chosen according to the following criteria:
 
 1. A simple comparison-based sort (Insertion Sort)
 2. An efficient comparison-based sort (Quicksort and Heap Sort)
-3. A non-comparison sort (Counting Sort)
+3. A non-comparison sort (Bucket Sort)
 4. A hybrid sort (IntroSort)
 
 An introduction to the above algorithms as well as an analysis of their implementation and benchmarking are concluded in a report.
@@ -47,8 +47,11 @@ Distribution of Python is [Anaconda Python distribution](https://www.anaconda.co
 Packages and modules used to complete the project: 
   * [time](https://docs.python.org/3/library/time.html)
   * [numpy](https://numpy.org/)
+  * [pandas](https://pandas.pydata.org/)
+  * [matplotlib](https://matplotlib.org/)
+  * [os](https://docs.python.org/3/library/os.html)
 
-
+  
 ----
 
 #### License <a name="licence"></a>

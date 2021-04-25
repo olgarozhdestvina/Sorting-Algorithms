@@ -6,13 +6,13 @@ import numpy as np
 import os
 
 def plot(df):
-    # Plot and save the figure.
-    plt.style.use('ggplot')
-
+    """ Plot performace of soting algorithms and save it. """
     
-    # Rearrange the dataframe.
+    # Rearrange the dataframe (sothat algorithms are now columns).
     df = df.T
 
+    # Plot the data.
+    plt.style.use('ggplot')
     _, ax = plt.subplots()
     df.plot(linestyle='--', marker='o', ax=ax)
 
@@ -29,7 +29,8 @@ def plot(df):
     return leg, ax
 
 
-def big_o_chart_and_excel(df):
+def excel_file(df):
+    """ Creating a new folder and saving excel file to it. """
     # Create a new directory 'assets'
     # if it doesn't exist.
     if not os.path.isdir('assets'):
@@ -37,6 +38,10 @@ def big_o_chart_and_excel(df):
 
     # Save the dataframe as an excel file.
     df.to_excel('assets/benchmark_results.xlsx')
+
+
+def big_o_chart_and_excel(df):
+    """ Big O notation add-on for the benchmark plot. """
 
     # Plot the benchmarks.
     leg, ax = plot(df)
@@ -52,12 +57,11 @@ def big_o_chart_and_excel(df):
     horrible = ax.fill_between(x, y, np.max(y)+35000, facecolor='red', label='horrible', interpolate=True,  alpha=0.5)
     
     # Limit the axis.
-    plt.xlim(0, 10100)
-    plt.ylim(0, 55000)
+    plt.xlim(0, 10200)
+    plt.ylim(-200, 55000)
 
     # Split the legend into two.
     # https://matplotlib.org/2.0.2/users/legend_guide.html
-    
     ax.add_artist(leg)
     plt.legend(handles=[excellent, good, fair, bad, horrible], ncol=5, bbox_to_anchor=(1.04, 1), loc=4, frameon=False)
     plt.title('Big O Notation', y=1.09, fontsize=13)
@@ -65,3 +69,9 @@ def big_o_chart_and_excel(df):
     # Save the plot and close.
     plt.savefig('assets/big_o_notation_plot.png', bbox_inches="tight")
     plt.close()
+
+
+def assets_for_report(df):
+    """ Run the above functions """
+    excel_file(df)
+    big_o_chart_and_excel(df)
