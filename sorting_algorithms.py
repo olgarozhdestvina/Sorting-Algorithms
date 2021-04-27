@@ -1,9 +1,18 @@
+""" SORTING ALGORITHMS: 
+        * Insertion sort
+        * Quicksort
+        * Heap sort
+        * Bucket sort
+        * Introsort
+"""
+
 import numpy as np
 
 # 1. Insertion sort
 # https://brilliant.org/wiki/insertion/
 
-def insertion_sort(array, begin=0, end=None):
+
+def insertionSort(array, begin=0, end=None):
 
     # Loop through the array starting from its second element
     if end == None:
@@ -36,7 +45,7 @@ def insertion_sort(array, begin=0, end=None):
 # 2. Quicksort.
 # https://brilliant.org/wiki/quick-sort/
 
-def quicksort(array):
+def quickSort(array):
     # Base case for the recursion where there is
     # only one element in the array.
     length = len(array)
@@ -61,48 +70,46 @@ def quicksort(array):
             high.append(item)
 
     # Combine the lists into one in the low-same-high order.
-    return quicksort(low) + same + quicksort(high)
+    return quickSort(low) + same + quickSort(high)
 
 
 # 3. Heap sort
 # https://brilliant.org/wiki/heap-sort/
 
-def max_heapify(array, heap_size, i):
-    """ Function for maintaining the max-heap property:
-    meaning that a node can't have a greater value than its parent."""
-
-    # Initialize the largest as a root
-    largest = i
-
-    # And then left and right children
-    left = 2 * i + 1
-    right = 2 * i + 2
-
-    # Check if left or right child exists and if either
-    # is greater than a root. If yes, make it the largest.
-    if left < heap_size and array[left] > array[largest]:
-        largest = left
-    if right < heap_size and array[right] > array[largest]:
-        largest = right
-
-    # If changes are needed, swap the root with the largest
-    if largest != i:
-        array[i], array[largest] = array[largest], array[i]
-
-        # Heapify the root now with the largest
-        max_heapify(array, heap_size, largest)
-
-
-def build_heap(array, heap_size):
-    """ Building max heap """
-    for i in range((heap_size//2), -1, -1):
-
-        # Check for max-heap property
-        max_heapify(array, heap_size, i)
-
-
-def heap_sort(array):
+def heapSort(array):
     """ Sort an array of a given size """
+
+    def build_heap(array, heap_size):
+        """ Building max heap """
+        for i in range((heap_size//2), -1, -1):
+
+            # Check for max-heap property
+            max_heapify(array, heap_size, i)
+
+    def max_heapify(array, heap_size, i):
+        """ Function for maintaining the max-heap property:
+        meaning that a node can't have a greater value than its parent."""
+
+        # Initialize the largest as a root
+        largest = i
+
+        # And then left and right children
+        left = 2 * i + 1
+        right = 2 * i + 2
+
+        # Check if left or right child exists and if either
+        # is greater than a root. If yes, make it the largest.
+        if left < heap_size and array[left] > array[largest]:
+            largest = left
+        if right < heap_size and array[right] > array[largest]:
+            largest = right
+
+        # If changes are needed, swap the root with the largest
+        if largest != i:
+            array[i], array[largest] = array[largest], array[i]
+
+            # Heapify the root now with the largest
+            max_heapify(array, heap_size, largest)
 
     heap_size = len(array)
 
@@ -123,7 +130,7 @@ def heap_sort(array):
 # 4. Bucket Sort
 # https://stackabuse.com/bucket-sort-in-python/
 
-def bucket_sort(array):
+def bucketSort(array):
     # Find maximum value in the list and use array length to determine
     # which value in the array goes into which bucket
     max_value = max(array)
@@ -148,7 +155,7 @@ def bucket_sort(array):
 
     # Sort individual backets using the Insertion Sort
     for i in range(length):
-        insertion_sort(buckets_list[i])
+        insertionSort(buckets_list[i])
 
     # Concatenate the buckets
     output = []
@@ -161,13 +168,16 @@ def bucket_sort(array):
 # https://www.geeksforgeeks.org/introsort-or-introspective-sort/
 # https://gist.github.com/Alfex4936/e8b6b7c06a181d3faa84b155b20e6de6
 
-def introsort(array): 
+def introSort(array):
+    """ Function to run introsort_helper with initial parameters """
 
-    # Set the maximum depth for recursion
-    max_depth = 2 * (len(array).bit_length() - 1)
-    # Set a threshold to choose what sort to run 
+    length = len(array)
+
+    # Set the maximum depth for recursion and a threshold
+    max_depth = 2 * (length.bit_length() - 1)
     size_threshold = 16
-    return introsort_helper(array, 0, len(array), size_threshold, max_depth)
+
+    return introsort_helper(array, 0, length, size_threshold, max_depth)
 
 
 def introsort_helper(array, start, end, size_threshold, depth_limit):
@@ -189,7 +199,6 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
         else:
             return array[high_idx]
 
-
     def get_partition(array, low, high, pivot):
         """ Partial implementation of a quicksort to get the correct place
         for pivot and get its index. It then will be used as a partition 
@@ -198,33 +207,36 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
         # Compare each element of the array to the pivot.
         while True:
             while array[low] < pivot:
-                # Increase the number of elements 
+                # Increase the number of elements
                 # that are smaller than pivot
                 low += 1
 
-            # Decrease the number of elements 
+            # Decrease the number of elements
             # that are bigger than pivot
             high -= 1
-            
+
             while pivot < array[high]:
                 high -= 1
 
             if low >= high:
                 return low
+
+            # If high > low then swap the elements with low and high indexes
             array[low], array[high] = array[high], array[low]
             low += 1
 
     # If the array is large, call either heap sort or quicksort
-    while  end - start > size_threshold:
+    while end - start > size_threshold:
         # if the recursion limit is occurred call heap sort
         if depth_limit == 0:
-            return heap_sort(array)
+            return heapSort(array)
 
         # Decrease the level of recursion
         depth_limit -= 1
 
         # Find the pivot to get partition
-        pivot = median_of_3(array, start, start + ((end - start) // 2) + 1, end - 1)
+        pivot = median_of_3(array, start, start +
+                            ((end - start) // 2) + 1, end - 1)
 
         # array[partitionPoint] is now at right place
         partition = get_partition(array, start, end, pivot)
@@ -234,4 +246,4 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
         end = partition
 
     # Call the Insertion sort if the size of the array is small
-    return insertion_sort(array, start, end)
+    return insertionSort(array, start, end)

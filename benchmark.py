@@ -9,19 +9,20 @@ Application to benchmark five different sorting algorithms.
 from time import time
 import numpy as np
 import pandas as pd
-from sorting_algorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
+from sorting_algorithms import insertionSort, quickSort, heapSort, bucketSort, introSort
 from outputs_for_report import assets_for_report
 
 
+"""
+TIME BENCHMARK
+"""
 
-"""
-RUNNING TIME BENCHMARK
-"""
 
 def shuffled_array(array):
     """ Shuffle an array using a numpy random number generator """
     rng = np.random.default_rng()
     rng.shuffle(array)
+
     return array
 
 
@@ -57,14 +58,16 @@ def average_running_time(input_sizes, sorting_algorithm):
 
 def benchmark_runner(input_sizes):
     """ Creating a list of benchmark results """
-    
+
     # A list of algorithms.
-    sorting_algorithms = [insertion_sort, quicksort, heap_sort, bucket_sort, introsort]
+    sorting_algorithms = [insertionSort, quickSort,
+                          heapSort, bucketSort, introSort]
     benchmarks = []
 
     # Run benchmark for each sorting algorithm.
     for sorting_algorithm in sorting_algorithms:
-        running_time_average = average_running_time(input_sizes, sorting_algorithm)
+        running_time_average = average_running_time(
+            input_sizes, sorting_algorithm)
         benchmarks.append(running_time_average)
 
     return benchmarks
@@ -75,23 +78,28 @@ def results_as_dataframe(input_sizes, benchmarks):
 
     # Creating a dataframe with input sizes for columns
     # and algorithm names for the index.
-    algorithm_names = ['Insertion Sort', 'Quicksort', 'Heap Sort', 'Bucket Sort', 'IntroSort']
+    algorithm_names = ['Insertion Sort', 'Quicksort',
+                       'Heap Sort', 'Bucket Sort', 'IntroSort']
     df = pd.DataFrame(index=algorithm_names, columns=input_sizes)
     df.columns.name = 'Sizes'
 
     # Add the results into the dataframe.
     for i in range(len(algorithm_names)):
         df.iloc[i] = benchmarks[i]
+        
     return df
 
-# Driver code to test above.
+
+# Driver code.
 if __name__ == '__main__':
-    input_sizes = [100, 250, 500, 750, 1000, 1250, 2500, 3750, 5000, 6250, 7500, 8750, 10000]
+    
+    input_sizes = [100, 250, 500, 750]# , 1000, 1250,2500, 3750, 5000, 6250, 7500, 8750, 10000]
 
     benchmarks = benchmark_runner(input_sizes)
     benchmark_results = results_as_dataframe(input_sizes, benchmarks)
     assets_for_report(benchmark_results)
 
     # Output benchmark results into the console.
-    headers = [benchmark_results.columns.name] + list(benchmark_results.columns)
+    headers = [benchmark_results.columns.name] + \
+        list(benchmark_results.columns)
     print(benchmark_results.to_markdown(tablefmt="grid", headers=headers))
