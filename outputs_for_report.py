@@ -13,7 +13,7 @@ def plot(df):
 
     # Plot the data.
     plt.style.use('ggplot')
-    _, ax = plt.subplots()
+    _, ax = plt.subplots(figsize=(12, 8))
     df.plot(linestyle='--', marker='o', ax=ax)
 
     # Set labels and a title.
@@ -58,7 +58,7 @@ def big_o_chart_and_excel(df):
     
     # Limit the axis.
     plt.xlim(0, 10200)
-    plt.ylim(-200, 55000)
+    plt.ylim(-500, 55000)
 
     # Split the legend into two.
     # https://matplotlib.org/2.0.2/users/legend_guide.html

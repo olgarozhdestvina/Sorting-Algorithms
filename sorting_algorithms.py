@@ -3,29 +3,32 @@ import numpy as np
 # 1. Insertion sort
 # https://brilliant.org/wiki/insertion/
 
-def insertion_sort(array):
+def insertion_sort(array, begin=0, end=None):
 
     # Loop through the array starting from its second element
-    for slot in range(1, len(array)):
+    if end == None:
+        end = len(array)
+
+    for slot in range(begin, end):
 
         # Select the element to position in its correct place
         current_value = array[slot]
 
         # Initialize a variable for finding the correct position of the current value
-        position = slot - 1
+        position = slot
 
         # Loop through the array and find the correct position
         # of the element referenced by current_value
-        while position >= 0 and array[position] > current_value:
+        while position != begin and array[position-1] > current_value:
 
             # Shift the value to the left and reposition position
             # to point to the next element (from right to left)
-            array[position + 1] = array[position]
+            array[position] = array[position-1]
             position -= 1
 
         # When shifting is finished,
         # position the current_value in its correct location
-        array[position + 1] = current_value
+        array[position] = current_value
 
     return array
 
@@ -156,3 +159,79 @@ def bucket_sort(array):
 
 # 5. IntroSort
 # https://www.geeksforgeeks.org/introsort-or-introspective-sort/
+# https://gist.github.com/Alfex4936/e8b6b7c06a181d3faa84b155b20e6de6
+
+def introsort(array): 
+
+    # Set the maximum depth for recursion
+    max_depth = 2 * (len(array).bit_length() - 1)
+    # Set a threshold to choose what sort to run 
+    size_threshold = 16
+    return introsort_helper(array, 0, len(array), size_threshold, max_depth)
+
+
+def introsort_helper(array, start, end, size_threshold, depth_limit):
+    """ The main function of Introsort implementation where
+    low is a starting index, high - ending index, 
+    size_threshold - to compare the size of the array,
+    depth_limit - maximum depth for recursion.
+    """
+
+    def median_of_3(array, low_idx, mid_idx, high_idx):
+        """ The function to find the median of the three elements
+        in the index low_idx, mid_idx, high_idx """
+
+        if (array[low_idx] - array[mid_idx]) * (array[high_idx] - array[low_idx]) >= 0:
+            return array[low_idx]
+
+        elif (array[mid_idx] - array[low_idx]) * (array[high_idx] - array[mid_idx]) >= 0:
+            return array[mid_idx]
+        else:
+            return array[high_idx]
+
+
+    def get_partition(array, low, high, pivot):
+        """ Partial implementation of a quicksort to get the correct place
+        for pivot and get its index. It then will be used as a partition 
+        to split the array into smaller parts for futher sorting.
+        """
+        # Compare each element of the array to the pivot.
+        while True:
+            while array[low] < pivot:
+                # Increase the number of elements 
+                # that are smaller than pivot
+                low += 1
+
+            # Decrease the number of elements 
+            # that are bigger than pivot
+            high -= 1
+            
+            while pivot < array[high]:
+                high -= 1
+
+            if low >= high:
+                return low
+            array[low], array[high] = array[high], array[low]
+            low += 1
+
+    # If the array is large, call either heap sort or quicksort
+    while  end - start > size_threshold:
+        # if the recursion limit is occurred call heap sort
+        if depth_limit == 0:
+            return heap_sort(array)
+
+        # Decrease the level of recursion
+        depth_limit -= 1
+
+        # Find the pivot to get partition
+        pivot = median_of_3(array, start, start + ((end - start) // 2) + 1, end - 1)
+
+        # array[partitionPoint] is now at right place
+        partition = get_partition(array, start, end, pivot)
+
+        # Sort elements before and after the partitioning index
+        introsort_helper(array, partition, end, size_threshold, depth_limit)
+        end = partition
+
+    # Call the Insertion sort if the size of the array is small
+    return insertion_sort(array, start, end)
