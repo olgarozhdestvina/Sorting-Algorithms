@@ -103,5 +103,7 @@ def save_benchmark_plots_excluding_insertion_sort(df):
 
 
 def excel_and_plots_for_report(df):
+    """ Excel and plots with all benchmarks. """
+
     excel_file(df)
     save_benchmark_plots(df)

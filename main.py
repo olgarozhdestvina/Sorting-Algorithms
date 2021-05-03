@@ -9,7 +9,7 @@ Application to benchmark five different sorting algorithms.
 from time import time
 import numpy as np
 import pandas as pd
-from sortingAlgorithms import insertionSort, quickSort, heapSort, bucketSort, introSort
+from sortingAlgorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
 from assetsForReport import excel_and_plots_for_report, save_benchmark_plots_excluding_insertion_sort
 
 
@@ -60,8 +60,8 @@ def benchmark_runner(input_sizes):
     """ Creating a list of benchmark results """
 
     # A list of algorithms.
-    sorting_algorithms = [insertionSort, quickSort,
-                          heapSort, bucketSort, introSort]
+    sorting_algorithms = [insertion_sort, quicksort,
+                          heap_sort, bucket_sort, introsort]
     benchmarks = []
 
     # Run benchmark for each sorting algorithm.
@@ -79,7 +79,7 @@ def results_as_dataframe(input_sizes, benchmarks):
     # Creating a dataframe with input sizes for columns
     # and algorithm names for the index.
     algorithm_names = ['Insertion Sort', 'Quicksort',
-                       'Heap Sort', 'Bucket Sort', 'IntroSort']
+                       'Heap Sort', 'Bucket Sort', 'Introsort']
     df = pd.DataFrame(index=algorithm_names, columns=input_sizes)
     df.columns.name = 'Sizes'
 

@@ -12,12 +12,12 @@ import numpy as np
 # https://brilliant.org/wiki/insertion/
 
 
-def insertionSort(array, begin=0, end=None):
+def insertion_sort(array, begin=0, end=None):
     """ Sorting is done by splitting the array into a sorted and 
     an unsorted part. Values from the unsorted part are selected 
     and moved to their correct position in the sorted part. """
 
-    # None is initiated to be used in IntroSort implementation
+    # None is initiated to be used in Introsort implementation
     if end == None:
         end = len(array)
 
@@ -50,7 +50,7 @@ def insertionSort(array, begin=0, end=None):
 # 2. Quicksort.
 # https://brilliant.org/wiki/quick-sort/
 
-def quickSort(array):
+def quicksort(array):
     """ Sorting is done by selecting an element as pivot 
     to partition the array around the picked pivot. """
 
@@ -78,13 +78,13 @@ def quickSort(array):
             high.append(item)
 
     # Combine the lists into one in the low-same-high order.
-    return quickSort(low) + same + quickSort(high)
+    return quicksort(low) + same + quicksort(high)
 
 
 # 3. Heap sort
 # https://brilliant.org/wiki/heap-sort/
 
-def heapSort(array):
+def heap_sort(array):
     """ Sort an array of a given size """
 
     def build_heap(array, heap_size):
@@ -138,7 +138,7 @@ def heapSort(array):
 # 4. Bucket Sort
 # https://stackabuse.com/bucket-sort-in-python/
 
-def bucketSort(array):
+def bucket_sort(array):
     """ The main function for bucket sort implementation for sorting 
     array elements into buckets and then calling insertion_sort function
     on each of the buckets """
@@ -167,7 +167,7 @@ def bucketSort(array):
 
     # Sort individual backets using the Insertion Sort
     for i in range(length):
-        insertionSort(buckets_list[i])
+        insertion_sort(buckets_list[i])
 
     # Concatenate the buckets
     output = []
@@ -176,10 +176,10 @@ def bucketSort(array):
     return output
 
 
-# 5. IntroSort
+# 5. Introsort
 # https://gist.github.com/Alfex4936/e8b6b7c06a181d3faa84b155b20e6de6
 
-def introSort(array):
+def introsort(array):
     """ Function to run introsort_helper with initial parameters """
 
     length = len(array)
@@ -241,7 +241,7 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
     while end - start > size_threshold:
         # if the recursion limit is occurred call heap sort
         if depth_limit == 0:
-            return heapSort(array)
+            return heap_sort(array)
 
         # Decrease the level of recursion
         depth_limit -= 1
@@ -258,4 +258,4 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
         end = partition
 
     # Call the Insertion sort if the size of the array is small
-    return insertionSort(array, start, end)
+    return insertion_sort(array, start, end)
