@@ -1,6 +1,7 @@
 """
 PLOT AND EXCEL FOR THE REPORT
 """
+
 import matplotlib.pyplot as plt
 import numpy as np
 import os
@@ -8,6 +9,7 @@ import os
 
 def excel_file(df):
     """ Creating a new folder and saving excel file to it. """
+
     # Create a new directory 'assets'
     # if it doesn't exist.
     if not os.path.isdir('assets'):
@@ -17,7 +19,7 @@ def excel_file(df):
     df.to_excel('assets/benchmark_results.xlsx')
 
 
-def plot(df):
+def benchmark_plot(df):
     """ Plot performace of soting algorithms and save it. """
 
     # Rearrange the dataframe (sothat algorithms are now columns).
@@ -35,17 +37,23 @@ def plot(df):
 
     # Move legend outside the plot.
     leg = plt.legend(bbox_to_anchor=(1, 1), loc='best')
-
-    # Save the plot.
-    plt.savefig('assets/benchmark_plot.png', bbox_inches='tight')
     return leg, ax
 
 
-def big_o_chart_and_excel(df):
+def save_plot(df):
+    """ Saving the benchmark plot"""
+
+     # Plot the benchmarks.
+    leg, ax = benchmark_plot(df)
+    # Save the plot.
+    plt.savefig('assets/benchmark_plot.png', bbox_inches='tight')
+
+
+def big_o_chart(df):
     """ Big O notation add-on for the benchmark plot. """
 
     # Plot the benchmarks.
-    leg, ax = plot(df)
+    leg, ax = benchmark_plot(df)
 
     # Fill the space with colour for Big O.
     # Adapted from https://www.statology.org/matplotlib-fill-between/
@@ -62,10 +70,6 @@ def big_o_chart_and_excel(df):
     horrible = ax.fill_between(x, y, np.max(
         y)+35000, facecolor='red', label='horrible', interpolate=True,  alpha=0.5)
 
-    # Limit the axis.
-    plt.xlim(0, 10200)
-    plt.ylim(-500, 55000)
-
     # Split the legend into two.
     # https://matplotlib.org/2.0.2/users/legend_guide.html
     ax.add_artist(leg)
@@ -73,12 +77,37 @@ def big_o_chart_and_excel(df):
                ncol=5, bbox_to_anchor=(0.8, 1), loc=4, frameon=False)
     plt.title('Big O Notation', y=1.09, fontsize=13)
 
-    # Save the plot and close.
+
+def saveBigOchart(df):
+    """ Saving the big o chart. """
+
+    big_o_chart(df)
+
+    # Limit the axis.
+    plt.xlim(0, 10200)
+    plt.ylim(-500, 55000)
+
     plt.savefig('assets/big_o_notation_plot.png', bbox_inches="tight")
     plt.close()
 
 
-def assets_for_report(df):
+def saveBigOchartExcludingInsertionSort(df):
+    """ Big O notation add-on for the benchmark plot. """
+
+    big_o_chart(df)
+
+    # Limit the axis.
+    plt.xlim(0, 10200)
+    plt.ylim(-200, 20000)
+
+
+    plt.savefig('assets/big_o_notation_plot_excluding_insertion_sort.png', bbox_inches="tight")
+    plt.close()
+
+    
+
+def assetsForReport(df):
     """ Run the above functions """
+    
     excel_file(df)
-    big_o_chart_and_excel(df)
+    save_plot(df)

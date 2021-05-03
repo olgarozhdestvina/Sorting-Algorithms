@@ -13,17 +13,22 @@ import numpy as np
 
 
 def insertionSort(array, begin=0, end=None):
+    """ Sorting is done by splitting the array into a sorted and 
+    an unsorted part. Values from the unsorted part are selected 
+    and moved to their correct position in the sorted part. """
 
-    # Loop through the array starting from its second element
+    # None is initiated to be used in IntroSort implementation
     if end == None:
         end = len(array)
 
+    # Loop through the array
     for slot in range(begin, end):
 
         # Select the element to position in its correct place
         current_value = array[slot]
 
-        # Initialize a variable for finding the correct position of the current value
+        # Initialize a variable for finding the correct position of
+        # the current value
         position = slot
 
         # Loop through the array and find the correct position
@@ -46,6 +51,9 @@ def insertionSort(array, begin=0, end=None):
 # https://brilliant.org/wiki/quick-sort/
 
 def quickSort(array):
+    """ Sorting is done by selecting an element as pivot 
+    to partition the array around the picked pivot. """
+
     # Base case for the recursion where there is
     # only one element in the array.
     length = len(array)
@@ -87,8 +95,8 @@ def heapSort(array):
             max_heapify(array, heap_size, i)
 
     def max_heapify(array, heap_size, i):
-        """ Function for maintaining the max-heap property:
-        meaning that a node can't have a greater value than its parent."""
+        """ Function for maintaining the max-heap property: meaning 
+        that a node can't have a greater value than its parent."""
 
         # Initialize the largest as a root
         largest = i
@@ -131,6 +139,10 @@ def heapSort(array):
 # https://stackabuse.com/bucket-sort-in-python/
 
 def bucketSort(array):
+    """ The main function for bucket sort implementation for sorting 
+    array elements into buckets and then calling insertion_sort function
+    on each of the buckets """
+
     # Find maximum value in the list and use array length to determine
     # which value in the array goes into which bucket
     max_value = max(array)
@@ -165,7 +177,6 @@ def bucketSort(array):
 
 
 # 5. IntroSort
-# https://www.geeksforgeeks.org/introsort-or-introspective-sort/
 # https://gist.github.com/Alfex4936/e8b6b7c06a181d3faa84b155b20e6de6
 
 def introSort(array):
@@ -204,6 +215,7 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
         for pivot and get its index. It then will be used as a partition 
         to split the array into smaller parts for futher sorting.
         """
+
         # Compare each element of the array to the pivot.
         while True:
             while array[low] < pivot:

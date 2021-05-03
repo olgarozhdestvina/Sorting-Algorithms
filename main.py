@@ -10,7 +10,7 @@ from time import time
 import numpy as np
 import pandas as pd
 from sorting_algorithms import insertionSort, quickSort, heapSort, bucketSort, introSort
-from outputs_for_report import assets_for_report
+from outputs_for_report import assetsForReport, saveBigOchart, saveBigOchartExcludingInsertionSort
 
 
 """
@@ -20,9 +20,9 @@ TIME BENCHMARK
 
 def shuffled_array(array):
     """ Shuffle an array using a numpy random number generator """
+
     rng = np.random.default_rng()
     rng.shuffle(array)
-
     return array
 
 
@@ -93,11 +93,15 @@ def results_as_dataframe(input_sizes, benchmarks):
 # Driver code.
 if __name__ == '__main__':
     
-    input_sizes = [100, 250, 500, 750]# , 1000, 1250,2500, 3750, 5000, 6250, 7500, 8750, 10000]
-
+    # Run benchmarks for sorting algorithms for input size arrays.
+    input_sizes = [100, 250, 500, 750, 1000, 1250,2500, 3750, 5000, 6250, 7500, 8750, 10000]
     benchmarks = benchmark_runner(input_sizes)
     benchmark_results = results_as_dataframe(input_sizes, benchmarks)
-    assets_for_report(benchmark_results)
+
+    # Save excel, plot and big O charts.
+    assetsForReport(benchmark_results)
+    saveBigOchart(benchmark_results)
+    saveBigOchartExcludingInsertionSort(df)(benchmark_results[1:])
 
     # Output benchmark results into the console.
     headers = [benchmark_results.columns.name] + \
