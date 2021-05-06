@@ -150,9 +150,9 @@ def bucket_sort(array):
     size = max_value/length
 
     # Create a number of empty buckets to match the array length
-    buckets_list = []
+    bucket_list = []
     for _ in range(length):
-        buckets_list.append([])
+        bucket_list.append([])
 
     # Depending on the size distribute elements among buckets
     for i in range(length):
@@ -161,18 +161,14 @@ def bucket_sort(array):
         elem_size = int(array[i] / size)
 
         if elem_size != length:
-            buckets_list[elem_size].append(array[i])
+            bucket_list[elem_size].append(array[i])
         else:
-            buckets_list[length - 1].append(array[i])
-
-    # Sort individual backets using the Insertion Sort
-    for i in range(length):
-        insertion_sort(buckets_list[i])
+            bucket_list[length - 1].append(array[i])
 
     # Concatenate the buckets
     output = []
     for bucket in range(length):
-        output = output + buckets_list[bucket]
+        output = output + bucket_list[bucket]
     return output
 
 
