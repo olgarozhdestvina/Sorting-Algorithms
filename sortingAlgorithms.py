@@ -139,36 +139,27 @@ def heap_sort(array):
 # https://stackabuse.com/bucket-sort-in-python/
 
 def bucket_sort(array):
-    """ The main function for bucket sort implementation for sorting 
-    array elements into buckets and then calling insertion_sort function
-    on each of the buckets """
+    """ The function for bucket sort implementation assigning 
+    array elements into corresponding buckets and then recombining
+    the buckets into a sorted array.
 
-    # Find maximum value in the list and use array length to determine
-    # which value in the array goes into which bucket
-    max_value = max(array)
-    length = len(array)
-    size = max_value/length
+    The implementation is simplified since the input is always
+    equally distributed in a range [0, max].
+    """
 
     # Create a number of empty buckets to match the array length
-    bucket_list = []
-    for _ in range(length):
-        bucket_list.append([])
+    length = len(array)
+    bucket_list = [[] for _ in range(length)]
 
-    # Depending on the size distribute elements among buckets
+    # Distribute elements among buckets where bucket index
+    # is equal to the current element index 
     for i in range(length):
-
-        # Size of element with current index
-        elem_size = int(array[i] / size)
-
-        if elem_size != length:
-            bucket_list[elem_size].append(array[i])
-        else:
-            bucket_list[length - 1].append(array[i])
+        bucket_list[array[i]].append(array[i])
 
     # Concatenate the buckets
     output = []
     for bucket in range(length):
-        output = output + bucket_list[bucket]
+        output += bucket_list[bucket]
     return output
 
 
@@ -176,7 +167,7 @@ def bucket_sort(array):
 # https://gist.github.com/Alfex4936/e8b6b7c06a181d3faa84b155b20e6de6
 
 def introsort(array):
-    """ Function to run introsort_helper with initial parameters """
+    """ The function to run introsort_helper with initial parameters """
 
     length = len(array)
 

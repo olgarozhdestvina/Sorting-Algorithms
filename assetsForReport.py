@@ -66,7 +66,7 @@ def big_o_chart(df, leg, ax):
                ncol=5, bbox_to_anchor=(0.8, 1), loc=4, frameon=False)
 
     # Extend the x axis and give the title to the plot.
-    plt.xlim(0, 10200)
+    plt.xlim(0, 15200)
     plt.title('Big O Notation', y=1.09, fontsize=13)
 
 
@@ -78,7 +78,7 @@ def save_benchmark_plots(df):
 
     # Extend y axis to catch insertion sort on the Big O plot.
     big_o_chart(df, leg, ax)
-    plt.ylim(-500, 70000)
+    plt.ylim(-500, 220000)
 
     # Save the figure
     plt.savefig('assets/big_o_notation_plot.png', bbox_inches="tight")
@@ -94,7 +94,7 @@ def save_benchmark_plots_excluding_insertion_sort(df):
 
     # Limit y axis on big O chart to zoom in.
     big_o_chart(df, leg, ax)
-    plt.ylim(-10, 2000)
+    plt.ylim(-10, 7000)
 
     # Save the plot.
     plt.savefig('assets/big_o_notation_plot_excl_insertion_sort.png',

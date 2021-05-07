@@ -94,10 +94,11 @@ def results_as_dataframe(input_sizes, benchmarks):
 if __name__ == '__main__':
 
     # Run benchmarks for sorting algorithms for input size arrays.
-    input_sizes = [100, 250, 500, 750, 1000, 1250,
-                   2500, 3750, 5000, 6250, 7500, 8750, 10000]
+    input_sizes = [100, 250, 500, 750, 1000, 1250, 2500,
+                   5000, 6250, 7500, 8750, 10000, 15000]
     benchmarks = benchmark_runner(input_sizes)
     benchmark_results = results_as_dataframe(input_sizes, benchmarks)
+    
 
     # Save excel, plot and big O charts.
     excel_and_plots_for_report(benchmark_results)
