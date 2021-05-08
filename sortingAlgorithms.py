@@ -133,6 +133,8 @@ def heap_sort(array):
 
         # Check for max-heap property
         max_heapify(array, heap_size, 0)
+    
+    return array
 
 
 # 4. Bucket Sort

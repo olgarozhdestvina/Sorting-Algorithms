@@ -10,7 +10,7 @@ from time import time
 import numpy as np
 import pandas as pd
 from sortingAlgorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
-from assetsForReport import excel_and_plots_for_report, save_benchmark_plots_excluding_insertion_sort
+from assetsForReport import excel_and_plots_for_report, save_benchmark_plots
 
 
 """
@@ -35,7 +35,7 @@ def average_running_time(input_sizes, sorting_algorithm):
     # For each input size generate a new array.
     for i in input_sizes:
         time_diff_sum = 0
-        arr = np.arange(i)
+        arr = list(range(i))
 
         for _ in range(10):
             # Shuffle the array and measure the time it took to sort it.
@@ -56,12 +56,9 @@ def average_running_time(input_sizes, sorting_algorithm):
     return running_time_average
 
 
-def benchmark_runner(input_sizes):
+def benchmark_runner(sorting_algorithms, input_sizes):
     """ Creating a list of benchmark results """
 
-    # A list of algorithms.
-    sorting_algorithms = [insertion_sort, quicksort,
-                          heap_sort, bucket_sort, introsort]
     benchmarks = []
 
     # Run benchmark for each sorting algorithm.
@@ -73,13 +70,11 @@ def benchmark_runner(input_sizes):
     return benchmarks
 
 
-def results_as_dataframe(input_sizes, benchmarks):
+def results_as_dataframe(input_sizes, benchmarks, algorithm_names):
     """ Dateframe format of benchmarking results """
 
     # Creating a dataframe with input sizes for columns
     # and algorithm names for the index.
-    algorithm_names = ['Insertion Sort', 'Quicksort',
-                       'Heap Sort', 'Bucket Sort', 'Introsort']
     df = pd.DataFrame(index=algorithm_names, columns=input_sizes)
     df.columns.name = 'Sizes'
 
@@ -93,16 +88,37 @@ def results_as_dataframe(input_sizes, benchmarks):
 # Driver code.
 if __name__ == '__main__':
 
-    # Run benchmarks for sorting algorithms for input size arrays.
-    input_sizes = [100, 250, 500, 750, 1000, 1250, 2500,
-                   5000, 6250, 7500, 8750, 10000, 15000]
-    benchmarks = benchmark_runner(input_sizes)
-    benchmark_results = results_as_dataframe(input_sizes, benchmarks)
-    
+    # Input sizes for sorting.
+    input_sizes = [100, 250, 500, 750, 1000, 1250, 2500, 3750, 5000, 
+                    6250, 7500, 8750, 10000, 100000, 200000, 300000, 500000]
+
+    # A list of algorithms.
+    sorting_algorithms = [insertion_sort, quicksort,
+                          heap_sort, bucket_sort, introsort]
+    algorithm_names = ['Insertion Sort', 'Quicksort',
+                       'Heap Sort', 'Bucket Sort', 'Introsort']
+
+    # Run benchmarks for all sorting algorithms for input size up to 10000
+    benchmarks = benchmark_runner(sorting_algorithms, input_sizes[:-4])
+    benchmark_results = results_as_dataframe(
+        input_sizes[:-4], benchmarks, algorithm_names)
 
     # Save excel, plot and big O charts.
-    excel_and_plots_for_report(benchmark_results)
-    save_benchmark_plots_excluding_insertion_sort(benchmark_results[1:])
+    excel_and_plots_for_report(benchmark_results, 'assets/benchmark_results.xlsx',
+                               'assets/benchmark_plot.png', (0, 10200), (-500, 60000), 'assets/big_o_notation_plot.png')
+    save_benchmark_plots(benchmark_results[1:], 'assets/benchmark_plot_excl_insertion_sort.png',
+                         (0, 10200), (-10, 1000), 'assets/big_o_notation_plot_excl_insertion_sort.png')
+
+    # Separate benchmark for Quicksort and Introsort for input sizes 30000 - 150000
+    benchmarks_quicksort_vs_introsort = benchmark_runner(
+        sorting_algorithms[1:5:3], input_sizes[-4:])
+    benchmark_results_quicksort_vs_introsort = results_as_dataframe(
+        input_sizes[-4:], benchmarks_quicksort_vs_introsort, algorithm_names[1:5:3])
+
+    # Save excel and big O charts.
+    save_benchmark_plots(benchmark_results_quicksort_vs_introsort,
+                         'assets/benchmark_plot_quicksort_vs_introsort.png',
+                         (99500, 500500), (-50, 7000), 'assets/big_o_notation_plot_quicksort_vs_introsort.png')
 
     # Output benchmark results into the console.
     headers = [benchmark_results.columns.name] + \
