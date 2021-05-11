@@ -9,9 +9,8 @@ Application to benchmark five different sorting algorithms.
 from time import time
 import numpy as np
 import pandas as pd
-from sortingAlgorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
-from assetsForReport import excel_and_plots_for_report, save_benchmark_plots
-
+from sorting_algorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
+from assets_for_report import excel_and_plots_for_report, benchmark_plot
 
 """
 TIME BENCHMARK
@@ -56,9 +55,12 @@ def average_running_time(input_sizes, sorting_algorithm):
     return running_time_average
 
 
-def benchmark_runner(sorting_algorithms, input_sizes):
+def benchmark_runner(input_sizes):
     """ Creating a list of benchmark results """
 
+    # A list of algorithms.
+    sorting_algorithms = [insertion_sort, quicksort,
+                          heap_sort, bucket_sort, introsort]
     benchmarks = []
 
     # Run benchmark for each sorting algorithm.
@@ -70,8 +72,11 @@ def benchmark_runner(sorting_algorithms, input_sizes):
     return benchmarks
 
 
-def results_as_dataframe(input_sizes, benchmarks, algorithm_names):
+def results_as_dataframe(input_sizes, benchmarks):
     """ Dateframe format of benchmarking results """
+
+    algorithm_names = ['Insertion Sort', 'Quicksort',
+                       'Heap Sort', 'Bucket Sort', 'Introsort']
 
     # Creating a dataframe with input sizes for columns
     # and algorithm names for the index.
@@ -89,38 +94,22 @@ def results_as_dataframe(input_sizes, benchmarks, algorithm_names):
 if __name__ == '__main__':
 
     # Input sizes for sorting.
-    input_sizes = [100, 250, 500, 750, 1000, 1250, 2500, 3750, 5000, 
-                    6250, 7500, 8750, 10000, 100000, 200000, 300000, 500000]
+    input_sizes = [100, 250, 500, 750, 1000, 1250, 2500, 5000,
+                   6250, 7500, 8750, 10000, 15000]
 
-    # A list of algorithms.
-    sorting_algorithms = [insertion_sort, quicksort,
-                          heap_sort, bucket_sort, introsort]
-    algorithm_names = ['Insertion Sort', 'Quicksort',
-                       'Heap Sort', 'Bucket Sort', 'Introsort']
-
-    # Run benchmarks for all sorting algorithms for input size up to 10000
-    benchmarks = benchmark_runner(sorting_algorithms, input_sizes[:-4])
-    benchmark_results = results_as_dataframe(
-        input_sizes[:-4], benchmarks, algorithm_names)
-
-    # Save excel, plot and big O charts.
-    excel_and_plots_for_report(benchmark_results, 'assets/benchmark_results.xlsx',
-                               'assets/benchmark_plot.png', (0, 10200), (-500, 60000), 'assets/big_o_notation_plot.png')
-    save_benchmark_plots(benchmark_results[1:], 'assets/benchmark_plot_excl_insertion_sort.png',
-                         (0, 10200), (-10, 1000), 'assets/big_o_notation_plot_excl_insertion_sort.png')
-
-    # Separate benchmark for Quicksort and Introsort for input sizes 30000 - 150000
-    benchmarks_quicksort_vs_introsort = benchmark_runner(
-        sorting_algorithms[1:5:3], input_sizes[-4:])
-    benchmark_results_quicksort_vs_introsort = results_as_dataframe(
-        input_sizes[-4:], benchmarks_quicksort_vs_introsort, algorithm_names[1:5:3])
-
-    # Save excel and big O charts.
-    save_benchmark_plots(benchmark_results_quicksort_vs_introsort,
-                         'assets/benchmark_plot_quicksort_vs_introsort.png',
-                         (99500, 500500), (-50, 7000), 'assets/big_o_notation_plot_quicksort_vs_introsort.png')
+    # Run benchmarks and transfer it to a data frame
+    benchmarks = benchmark_runner(input_sizes)
+    benchmark_results = results_as_dataframe(input_sizes, benchmarks)
 
     # Output benchmark results into the console.
     headers = [benchmark_results.columns.name] + \
         list(benchmark_results.columns)
     print(benchmark_results.to_markdown(tablefmt="grid", headers=headers))
+
+    # Save excel, plot and big O charts
+    # 2 plots (for all sorts and excluding insetion sort)
+    # 2 big o plots for originally expected time complexity and adjusted estimation.
+    excel_and_plots_for_report(benchmark_results.T, 'assets/benchmark_results.xlsx',
+                               'assets/benchmark_plot.png')
+    benchmark_plot(benchmark_results[1:].T,
+                   'assets/benchmark_plot_excl_insertion_sort.png')

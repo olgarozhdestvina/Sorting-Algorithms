@@ -4,7 +4,7 @@ with in-built sorted function
 """
 
 import numpy as np
-from sortingAlgorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
+from sorting_algorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
 
 
 def shuffled_array(array):
