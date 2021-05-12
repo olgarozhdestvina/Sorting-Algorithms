@@ -26,6 +26,7 @@ def benchmark_plot(df, plot_name):
     # Plot the data.
     plt.style.use('bmh')
     _, ax = plt.subplots(figsize=(12, 9))
+    df = df.T
     df.plot(linestyle='--', marker='o', ax=ax)
 
     # Set labels and a title.
@@ -75,10 +76,12 @@ def excel_and_plots_for_report(df, filename, plot_name):
     excel_file(df, filename)
     benchmark_plot(df, plot_name)
 
+    df = df.T
+    
     # Plot with expected Big O time complexity.
     n = np.linspace(100, 15000)
-    expected_big_o = [
-        n**2, n * np.log(n), n * np.log(n), np.log(n), n * np.log(n)]
+    expected_big_o = [n**2, n * np.log(n), 
+                        n * np.log(n), np.log(n), n * np.log(n)]
     expected_big_o_labels = ['Quadratic', 'Log Linear',
                              'Log Linear', 'Logarithmic', 'Log Linear']
     big_o_plot(df, n, expected_big_o, expected_big_o_labels,

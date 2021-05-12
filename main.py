@@ -16,15 +16,6 @@ from assets_for_report import excel_and_plots_for_report, benchmark_plot
 TIME BENCHMARK
 """
 
-
-def shuffled_array(array):
-    """ Shuffle an array using a numpy random number generator """
-
-    rng = np.random.default_rng()
-    rng.shuffle(array)
-    return array
-
-
 def average_running_time(input_sizes, sorting_algorithm):
     """ Find average running time (in milliseconds) 
     for a sorting algorithm for each input size array """
@@ -38,10 +29,10 @@ def average_running_time(input_sizes, sorting_algorithm):
 
         for _ in range(10):
             # Shuffle the array and measure the time it took to sort it.
-            shuffled = shuffled_array(arr)
+            np.random.shuffle(arr)
 
             start_time = time()
-            sorting_algorithm(shuffled)
+            sorting_algorithm(arr)
             time_diff = time() - start_time
 
             # Sum up the runtimes.
@@ -49,8 +40,8 @@ def average_running_time(input_sizes, sorting_algorithm):
 
         # Find the average, convert to ms,
         # round to 3 decimal places and append to the list.
-        running_time_average_sec = (time_diff_sum / 10) * 1000
-        running_time_average.append(round(running_time_average_sec, 3))
+        running_time_average_ms = (time_diff_sum / 10) * 1000
+        running_time_average.append(round(running_time_average_ms, 3))
 
     return running_time_average
 
@@ -95,7 +86,7 @@ if __name__ == '__main__':
 
     # Input sizes for sorting.
     input_sizes = [100, 250, 500, 750, 1000, 1250, 2500, 5000,
-                   6250, 7500, 8750, 10000, 15000]
+                  6250, 7500, 8750, 10000, 15000]
 
     # Run benchmarks and transfer it to a data frame
     benchmarks = benchmark_runner(input_sizes)
@@ -109,7 +100,8 @@ if __name__ == '__main__':
     # Save excel, plot and big O charts
     # 2 plots (for all sorts and excluding insetion sort)
     # 2 big o plots for originally expected time complexity and adjusted estimation.
-    excel_and_plots_for_report(benchmark_results.T, 'assets/benchmark_results.xlsx',
-                               'assets/benchmark_plot.png')
-    benchmark_plot(benchmark_results[1:].T,
+    benchmark_plot(benchmark_results[1:],
                    'assets/benchmark_plot_excl_insertion_sort.png')
+    excel_and_plots_for_report(benchmark_results, 'assets/benchmark_results.xlsx',
+                               'assets/benchmark_plot.png')
+    

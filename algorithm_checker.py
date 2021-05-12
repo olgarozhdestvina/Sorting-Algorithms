@@ -7,15 +7,8 @@ import numpy as np
 from sorting_algorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
 
 
-def shuffled_array(array):
-    """ Shuffle an array using a numpy random number generator """
-
-    rng = np.random.default_rng()
-    rng.shuffle(array)
-    return array
-
-
-arr = shuffled_array(list(range(5000)))
+arr = list(range(5000))
+np.random.shuffle(arr)
 
 if insertion_sort(arr) == sorted(arr):
     print('Insertion sort ->', True)

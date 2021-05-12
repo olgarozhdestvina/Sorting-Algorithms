@@ -12,7 +12,7 @@ import numpy as np
 # https://brilliant.org/wiki/insertion/
 
 
-def insertion_sort(array, begin=0, end=None):
+def insertion_sort(array, begin=1, end=None):
     """ Sorting is done by splitting the array into a sorted and 
     an unsorted part. Values from the unsorted part are selected 
     and moved to their correct position in the sorted part. """
@@ -33,7 +33,7 @@ def insertion_sort(array, begin=0, end=None):
 
         # Loop through the array and find the correct position
         # of the element referenced by current_value
-        while position != begin and array[position-1] > current_value:
+        while position > 0 and array[position-1] > current_value:
 
             # Shift the value to the left and reposition position
             # to point to the next element (from right to left)
@@ -162,6 +162,7 @@ def bucket_sort(array):
     output = []
     for bucket in range(length):
         output += bucket_list[bucket]
+        
     return output
 
 
