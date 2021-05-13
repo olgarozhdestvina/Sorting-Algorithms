@@ -5,7 +5,6 @@ PLOT AND EXCEL FOR THE REPORT
 import matplotlib.pyplot as plt
 import numpy as np
 import os
-import pandas as pd
 
 
 def excel_file(df, filename):

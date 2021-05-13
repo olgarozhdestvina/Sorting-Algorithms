@@ -46,7 +46,7 @@ Distribution of Python is [Anaconda Python distribution](https://www.anaconda.co
 
 Packages and modules used to complete the project: 
   * [time](https://docs.python.org/3/library/time.html)
-  * [numpy](https://numpy.org/)
+  * [random](https://docs.python.org/3/library/random.html)
   * [pandas](https://pandas.pydata.org/)
   * [matplotlib](https://matplotlib.org/)
   * [os](https://docs.python.org/3/library/os.html)

@@ -7,14 +7,15 @@ Application to benchmark five different sorting algorithms.
 """
 
 from time import time
-import numpy as np
-import pandas as pd
+from random import shuffle
+from pandas import DataFrame
 from sorting_algorithms import insertion_sort, quicksort, heap_sort, bucket_sort, introsort
 from assets_for_report import excel_and_plots_for_report, benchmark_plot
 
 """
 TIME BENCHMARK
 """
+
 
 def average_running_time(input_sizes, sorting_algorithm):
     """ Find average running time (in milliseconds) 
@@ -29,7 +30,7 @@ def average_running_time(input_sizes, sorting_algorithm):
 
         for _ in range(10):
             # Shuffle the array and measure the time it took to sort it.
-            np.random.shuffle(arr)
+            shuffle(arr)
 
             start_time = time()
             sorting_algorithm(arr)
@@ -49,16 +50,11 @@ def average_running_time(input_sizes, sorting_algorithm):
 def benchmark_runner(input_sizes):
     """ Creating a list of benchmark results """
 
-    # A list of algorithms.
+    # # Run benchmark for each sorting algorithm and add results into a list.
     sorting_algorithms = [insertion_sort, quicksort,
                           heap_sort, bucket_sort, introsort]
-    benchmarks = []
-
-    # Run benchmark for each sorting algorithm.
-    for sorting_algorithm in sorting_algorithms:
-        running_time_average = average_running_time(
-            input_sizes, sorting_algorithm)
-        benchmarks.append(running_time_average)
+    benchmarks = [average_running_time(
+        input_sizes, sorting_algorithm) for sorting_algorithm in sorting_algorithms]
 
     return benchmarks
 
@@ -71,7 +67,7 @@ def results_as_dataframe(input_sizes, benchmarks):
 
     # Creating a dataframe with input sizes for columns
     # and algorithm names for the index.
-    df = pd.DataFrame(index=algorithm_names, columns=input_sizes)
+    df = DataFrame(index=algorithm_names, columns=input_sizes)
     df.columns.name = 'Sizes'
 
     # Add the results into the dataframe.
@@ -104,4 +100,3 @@ if __name__ == '__main__':
                    'assets/benchmark_plot_excl_insertion_sort.png')
     excel_and_plots_for_report(benchmark_results, 'assets/benchmark_results.xlsx',
                                'assets/benchmark_plot.png')
-    

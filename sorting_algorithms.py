@@ -6,45 +6,43 @@
         * Introsort
 """
 
-import numpy as np
+from random import randint
 
 # 1. Insertion sort
 # https://brilliant.org/wiki/insertion/
-
-
 def insertion_sort(array, begin=1, end=None):
-    """ Sorting is done by splitting the array into a sorted and 
-    an unsorted part. Values from the unsorted part are selected 
-    and moved to their correct position in the sorted part. """
+        """ Sorting is done by splitting the array into a sorted and 
+        an unsorted part. Values from the unsorted part are selected 
+        and moved to their correct position in the sorted part. """
 
-    # None is initiated to be used in Introsort implementation
-    if end == None:
-        end = len(array)
+        # None is initiated to be used in Introsort implementation
+        if end == None:
+            end = len(array)
 
-    # Loop through the array
-    for slot in range(begin, end):
+        # Loop through the array
+        for slot in range(begin, end):
 
-        # Select the element to position in its correct place
-        current_value = array[slot]
+            # Select the element to position in its correct place
+            current_value = array[slot]
 
-        # Initialize a variable for finding the correct position of
-        # the current value
-        position = slot
+            # Initialize a variable for finding the correct position of
+            # the current value
+            position = slot
 
-        # Loop through the array and find the correct position
-        # of the element referenced by current_value
-        while position > 0 and array[position-1] > current_value:
+            # Loop through the array and find the correct position
+            # of the element referenced by current_value
+            while position > 0 and array[position-1] > current_value:
 
-            # Shift the value to the left and reposition position
-            # to point to the next element (from right to left)
-            array[position] = array[position-1]
-            position -= 1
+                # Shift the value to the left and reposition position
+                # to point to the next element (from right to left)
+                array[position] = array[position-1]
+                position -= 1
 
-        # When shifting is finished,
-        # position the current_value in its correct location
-        array[position] = current_value
+            # When shifting is finished,
+            # position the current_value in its correct location
+            array[position] = current_value
 
-    return array
+        return array
 
 
 # 2. Quicksort.
@@ -61,7 +59,7 @@ def quicksort(array):
         return array
 
     # Randomly select a pivot
-    pivot = array[np.random.randint(0, length - 1)]
+    pivot = array[randint(0, length - 1)]
 
     # Loop through the array and compare each element to the pivot.
     # If they are smaller --> add to the low list.
@@ -187,7 +185,7 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
     size_threshold - to compare the size of the array,
     depth_limit - maximum depth for recursion.
     """
-
+    
     def median_of_3(array, low_idx, mid_idx, high_idx):
         """ The function to find the median of the three elements
         in the index low_idx, mid_idx, high_idx """
@@ -226,6 +224,8 @@ def introsort_helper(array, start, end, size_threshold, depth_limit):
             # If high > low then swap the elements with low and high indexes
             array[low], array[high] = array[high], array[low]
             low += 1
+
+    
 
     # If the array is large, call either heap sort or quicksort
     while end - start > size_threshold:
